@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>My playground</title>
+</head>
+<body>
+    <div id="worker">Pending worker</div>
+    <div id="sw">Pending worker</div>
+    <div id="jsa">Pending JavaScript a</div>
+    <div id="jsb">Pending JavaScript b</div>
+    <script src="/a.js"></script>
+    <script src="/b.js"></script>
+    <script>
+        const w = new Worker("/worker.js");
+        const workerDiv = document.getElementById("worker");
+        w.onmessage = (event) => {
+            workerDiv.innerText = event.data;
+        };
+    </script>
+    <script>
+        const sw = document.getElementById("sw");
+        navigator.serviceWorker
+        .register("/sw_cache.js")
+        .then(()=>{
+            sw.innerText = "Service Worker: Registered";
+        }).catch((e) => {
+            sw.innerText = "Service Worker: Error " + e;
+        });
+    </script>
+</body>
+</html>
